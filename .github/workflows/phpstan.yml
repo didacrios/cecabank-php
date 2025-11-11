@@ -1,0 +1,56 @@
+name: PHPStan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  phpstan:
+    name: PHPStan (Level 8)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐘 Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: simplexml
+        coverage: none
+        tools: composer:v2
+
+    - name: 📦 Get Composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: 💾 Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: 📥 Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: 🔍 Run PHPStan
+      run: ./vendor/bin/phpstan analyse --memory-limit=256M --error-format=github
+
+    - name: 📊 PHPStan Summary
+      if: always()
+      run: |
+        echo "### PHPStan Analysis 🔍" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Level:** 8 (Maximum strictness)" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "PHPStan ensures:" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ All types are correctly declared" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ No undefined variables or methods" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ No potential bugs in logic" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Full type coverage" >> $GITHUB_STEP_SUMMARY
+

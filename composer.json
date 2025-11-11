@@ -1,0 +1,32 @@
+{
+    "name": "didacrios/cecabank-php",
+    "description": "Unoficial PHP client library for Cecabank payment gateway (TPV)",
+    "type": "library",
+    "keywords": ["cecabank", "payment", "gateway", "tpv", "ecommerce"],
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dídac Rios"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-simplexml": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0|^10.0",
+        "phpstan/phpstan": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cecabank\\": "src/Cecabank/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cecabank\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
