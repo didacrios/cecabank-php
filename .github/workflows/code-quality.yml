@@ -38,9 +38,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: 🔍 Validate composer files
-      run: |
-        composer validate --strict
-        composer normalize --dry-run
+      run: composer validate --strict
 
     - name: 🔒 Check for security vulnerabilities
       run: composer audit

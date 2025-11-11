@@ -141,7 +141,7 @@ class Client
      * @param mixed $value
      * @return $this
      */
-    public function setOption(string|array $option, mixed $value = null): self
+    public function setOption($option, $value = null): self
     {
         if (is_array($option)) {
             $options = $option;
@@ -183,7 +183,7 @@ class Client
      * @param string|null $key
      * @return mixed|array<string, string>
      */
-    public function getOption(?string $key = null): mixed
+    public function getOption($key = null)
     {
         return $key ? $this->options[$key] : $this->options;
     }
@@ -213,7 +213,7 @@ class Client
      * @param string|null $key
      * @return string|array<string, string>
      */
-    public function getEnvironments(?string $key = null): string|array
+    public function getEnvironments($key = null)
     {
         if (empty($this->environments[$key])) {
             $envs = implode('|', array_keys($this->environments));
@@ -229,7 +229,7 @@ class Client
      * @param string|null $key
      * @return string|array<string, string>
      */
-    public function getRefundEnvironments(?string $key = null): string|array
+    public function getRefundEnvironments($key = null)
     {
         if (empty($this->refund_environments[$key])) {
             $envs = implode('|', array_keys($this->refund_environments));
@@ -440,8 +440,9 @@ class Client
 
     /**
      * @param mixed $amount
+     * @return string
      */
-    public function getAmount(mixed $amount): string
+    public function getAmount($amount): string
     {
         if (empty($amount)) {
             return '000';
